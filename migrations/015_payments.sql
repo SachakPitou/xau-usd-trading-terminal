@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS payments(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  tran_id VARCHAR(20) NOT NULL UNIQUE,
+  user_id INT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  currency CHAR(3) NOT NULL DEFAULT 'USD',
+  status ENUM('pending','paid','failed') NOT NULL DEFAULT 'pending',
+  apv VARCHAR(20) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  paid_at DATETIME NULL,
+  INDEX(user_id,status),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;

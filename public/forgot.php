@@ -15,8 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $token = bin2hex(random_bytes(32));
       db()->prepare('DELETE FROM password_resets WHERE user_id=?')->execute([$uid]);
       db()->prepare('INSERT INTO password_resets(user_id,token_hash,expires_at) VALUES(?,?,DATE_ADD(NOW(),INTERVAL 1 HOUR))')->execute([$uid, hash('sha256', $token)]);
-      send_mail($email, 'Reset your password - XAU Terminal',
-        "We got a request to reset your password. This link works once and expires in 1 hour:\n\n".app_url().'/reset.php?token='.$token."\n\nIf you didn't ask for this, ignore this email. Your password won't change.");
+      send_action_mail($email, 'Reset your password - XAU/USD Terminal', 'Reset your password',
+        'We received a request to reset your password. This link works once and expires in 1 hour.',
+        'Reset password', app_url().'/reset.php?token='.$token, "If you didn't ask for this, ignore this email. Your password won't change.");
     }
     $ok = 'If that email has an account, we sent a reset link. It expires in 1 hour.';
   }

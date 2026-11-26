@@ -18,7 +18,7 @@ site_header('Billing', ''); ?>
     <ul><li>Live scalping signals with reasoning</li><li>AI review &amp; market analysis</li><li>Performance, journal, risk tools</li><li>Telegram &amp; email alerts</li></ul>
     <?php if ($active): ?><p class="mu">Active until <b><?= h(substr($end, 0, 10)) ?></b>.</p><a class="btn" href="billing.php?renew=1">Add another <?= $days ?> days</a> <a class="btn pri" href="dashboard.php">Open dashboard</a>
     <?php elseif ($form): ?>
-      <form method="POST" target="aba_webservice" id="aba_merchant_request" action="<?= h(pw_base()) ?>/api/payment-gateway/v1/payments/purchase">
+      <form method="POST" id="aba_merchant_request" action="<?= h(pw_base()) ?>/api/payment-gateway/v1/payments/purchase">
         <?php foreach ($form as $k => $v): ?><input type="hidden" name="<?= h($k) ?>" value="<?= h($v) ?>"><?php endforeach; ?>
         <button class="btn pri lg2" style="width:100%" type="submit">Pay $<?= h($price) ?> with ABA PayWay</button>
       </form>
@@ -26,13 +26,4 @@ site_header('Billing', ''); ?>
     <?php else: ?><p class="mu">Payments are not configured yet.</p><?php endif; ?>
   </div>
 </div></section>
-<?php if ($form && !$active): ?>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://checkout.payway.com.kh/plugins/checkout2-0.js"></script>
-<script>
-document.getElementById('aba_merchant_request').addEventListener('submit', function (e) {
-  if (window.AbaPayway && typeof AbaPayway.checkout === 'function') { e.preventDefault(); AbaPayway.checkout(); }
-  else { this.target = '_self'; }   // plugin missing: normal form post to PayWay's hosted checkout page
-});
-</script>
-<?php endif; site_footer();
+<?php site_footer();

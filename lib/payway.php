@@ -17,6 +17,7 @@ function pw_new_payment(array $u): array {
   // PayWay hash order: req_time merchant_id tran_id amount items shipping ctid pwt firstname lastname email phone type
   //                    payment_option return_url cancel_url continue_success_url return_deeplink currency custom_fields return_params
   $f['hash'] = pw_hash([$req, $mid, $tran, $amount, $items, '', '', '', $first, '', $u['email'], '', 'purchase', '', $ret, '', $cont, '', 'USD', '', '']);
+  $f['view_type'] = 'hosted_view';   // not part of the signed hash string; asks PayWay for its full hosted checkout page
   return $f;
 }
 

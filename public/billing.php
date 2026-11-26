@@ -27,6 +27,12 @@ site_header('Billing', ''); ?>
   </div>
 </div></section>
 <?php if ($form && !$active): ?>
-<script src="https://checkout.payway.com.kh/plugins/checkout2-0.js" defer></script>
-<script>document.getElementById('aba_merchant_request').addEventListener('submit',function(e){e.preventDefault();AbaPayway.checkout()});</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://checkout.payway.com.kh/plugins/checkout2-0.js"></script>
+<script>
+document.getElementById('aba_merchant_request').addEventListener('submit', function (e) {
+  if (window.AbaPayway && typeof AbaPayway.checkout === 'function') { e.preventDefault(); AbaPayway.checkout(); }
+  else { this.target = '_self'; }   // plugin missing: normal form post to PayWay's hosted checkout page
+});
+</script>
 <?php endif; site_footer();
